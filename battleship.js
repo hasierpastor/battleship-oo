@@ -1,14 +1,22 @@
 //game class
 class Game {
   constructor() {
+    new Board();
+  }
+}
+
+class Board {
+  constructor() {
     this.board = [];
     this.makeBoard();
     this.makeHtmlBoard();
+    this.addCarrier();
+    console.log(this.board);
   }
 
   makeBoard() {
     for (let i = 0; i < 8; i++) {
-      this.board.push(Array.from({ length: 8 }));
+      this.board.push(new Array(8).fill(0));
     }
   }
 
@@ -23,6 +31,32 @@ class Game {
       }
       HtmlBoard.append(row);
     }
+  }
+
+  addCarrier() {
+    const carrier = new Ship(5);
+    //horizontal
+    if (carrier.direction < 0.5) {
+      let startingRow = Math.floor(Math.random() * 9);
+      let startingIndex = Math.floor(Math.random() * 4);
+      for (let i = 0; i < carrier.size; i++) {
+        this.board[startingRow][startingIndex + i] = 1;
+      }
+    } else {
+      let startingColumn = Math.floor(Math.random() * 9);
+      let startingIndex = Math.floor(Math.random() * 4);
+      for (let i = 0; i < carrier.size; i++) {
+        this.board[startingIndex + i][startingColumn] = 1;
+      }
+    }
+  }
+}
+
+class Ship {
+  constructor(size) {
+    this.size = size;
+    //direction will be random, if direction < 0.5 treat as horizontal, else treat as vertical
+    this.direction = Math.random();
   }
 }
 
